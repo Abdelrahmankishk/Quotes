@@ -1,21 +1,383 @@
-.content h1{
-    font-size: 80px;
-    font-family: Impact;
-    font-weight: 700;
-    margin: 53.6px 0 !important;
+:root {
+  --q-bg: #0b0914;
+  --q-text: #f4eee3;
+  --q-muted: #b8aecb;
+  --q-gold: #e9b872;
+  --q-gold-light: #f6dcae;
+  --q-gold-deep: #d99a4e;
+  --q-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --q-body: "Libre Baskerville", Georgia, "Times New Roman", serif;
+  --q-ease: cubic-bezier(0.22, 0.8, 0.24, 1);
 }
-.content p{
-    font-size: 35px;
-    font-family: 'Times New Roman', Times, serif;
-    font-weight: 400;
-    margin: 35px 0 !important;
+
+/* ---------- Base ---------- */
+body {
+  background-color: var(--q-bg);
+  color: var(--q-text);
+  font-family: var(--q-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
-.content button{
-    width: 250px;
-    height: 80px;
-    background-color: blue;
-    font-size: 13.3333px;
+
+.content {
+  width: 100%;
+  max-width: 46rem;
 }
-.content button:hover{
-    background-color: green;
+
+/* ---------- Animated background ---------- */
+.aurora {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: radial-gradient(120% 80% at 50% 0%, #1a1330 0%, var(--q-bg) 62%);
+}
+
+.orb {
+  position: absolute;
+  width: min(60vw, 38rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  opacity: 0.6;
+  will-change: transform;
+}
+
+.orb-gold {
+  top: -12%;
+  left: -10%;
+  background: radial-gradient(
+    circle,
+    rgba(233, 184, 114, 0.5),
+    transparent 68%
+  );
+  animation: drift-a 26s ease-in-out infinite alternate;
+}
+
+.orb-violet {
+  right: -12%;
+  bottom: -18%;
+  background: radial-gradient(
+    circle,
+    rgba(124, 92, 240, 0.55),
+    transparent 68%
+  );
+  animation: drift-b 30s ease-in-out infinite alternate;
+}
+
+.orb-rose {
+  top: 38%;
+  left: 55%;
+  width: min(40vw, 26rem);
+  background: radial-gradient(
+    circle,
+    rgba(224, 87, 127, 0.38),
+    transparent 68%
+  );
+  animation: drift-c 22s ease-in-out infinite alternate;
+}
+
+@keyframes drift-a {
+  to {
+    transform: translate3d(12vw, 10vh, 0) scale(1.15);
+  }
+}
+@keyframes drift-b {
+  to {
+    transform: translate3d(-14vw, -8vh, 0) scale(1.1);
+  }
+}
+@keyframes drift-c {
+  to {
+    transform: translate3d(-10vw, 12vh, 0) scale(0.9);
+  }
+}
+
+/* ---------- Heading & intro ---------- */
+.title {
+  margin: 0 0 1.25rem;
+  font-family: var(--q-display);
+  font-weight: 700;
+  font-size: clamp(2.6rem, 1.6rem + 5vw, 5rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  background: linear-gradient(180deg, #fff7e8 0%, var(--q-gold) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--q-gold-light);
+}
+
+.lead-text {
+  max-width: 30rem;
+  margin: 0 auto 2.5rem;
+  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.05rem);
+  line-height: 1.7;
+  color: var(--q-muted);
+}
+
+/* ---------- Quote card ---------- */
+.quote-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 17rem;
+  margin: 0 0 2.5rem;
+  padding: clamp(4.25rem, 9vw, 5.5rem) clamp(1.5rem, 5vw, 4rem)
+    clamp(2rem, 5vw, 3rem);
+  overflow: hidden;
+  border-radius: 1.75rem;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.02)
+  );
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%);
+  box-shadow:
+    0 30px 80px -30px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: transform 0.5s var(--q-ease);
+}
+
+/* Gradient hairline border */
+.quote-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    160deg,
+    rgba(233, 184, 114, 0.6),
+    rgba(233, 184, 114, 0) 40%,
+    rgba(167, 139, 250, 0) 60%,
+    rgba(167, 139, 250, 0.4)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Oversized opening quotation mark */
+.quote-card::before {
+  content: "\201C";
+  content: "\201C" / "";
+  position: absolute;
+  top: 0.6rem;
+  left: clamp(1rem, 4vw, 2.5rem);
+  font-family: var(--q-display);
+  font-weight: 700;
+  font-size: clamp(6rem, 14vw, 10rem);
+  line-height: 1;
+  background: linear-gradient(
+    180deg,
+    var(--q-gold) 0%,
+    rgba(233, 184, 114, 0) 85%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (hover: hover) {
+  .quote-card:hover {
+    transform: translateY(-4px);
+  }
+}
+
+#quote,
+#author {
+  position: relative;
+  z-index: 1;
+}
+
+#quote {
+  margin: 0 0 1.75rem;
+  font-family: var(--q-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.65rem, 1.15rem + 2.2vw, 2.6rem);
+  line-height: 1.35;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+  color: var(--q-text);
+}
+
+/* Placeholder shown before the first quote */
+#quote:empty {
+  margin-bottom: 0;
+}
+#quote:empty::before {
+  content: "Your next favorite quote is one click away.";
+  color: var(--q-muted);
+  opacity: 0.85;
+}
+
+#author {
+  margin: 0;
+  font-family: var(--q-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--q-gold);
+}
+
+#author:empty {
+  display: none;
+}
+#author:not(:empty)::before {
+  content: "";
+  display: block;
+  width: 3.5rem;
+  height: 1px;
+  margin: 0 auto 1.1rem;
+  background: linear-gradient(90deg, transparent, var(--q-gold), transparent);
+}
+
+/* ---------- Button ---------- */
+.btn-quote {
+  --bs-btn-padding-x: 2.25rem;
+  --bs-btn-padding-y: 0.95rem;
+  --bs-btn-border-width: 0;
+  --bs-btn-border-radius: 50rem;
+  --bs-btn-color: #1b1208;
+  --bs-btn-hover-color: #1b1208;
+  --bs-btn-active-color: #1b1208;
+  --bs-btn-bg: transparent;
+  --bs-btn-hover-bg: transparent;
+  --bs-btn-active-bg: transparent;
+  --bs-btn-border-color: transparent;
+  --bs-btn-hover-border-color: transparent;
+  --bs-btn-active-border-color: transparent;
+  --bs-btn-focus-shadow-rgb: 233, 184, 114;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 3.25rem;
+  overflow: hidden;
+  font-family: var(--q-body);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background-image: linear-gradient(
+    135deg,
+    var(--q-gold-light) 0%,
+    var(--q-gold) 55%,
+    var(--q-gold-deep) 100%
+  );
+  box-shadow:
+    0 12px 30px -10px rgba(233, 184, 114, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition:
+    transform 0.3s var(--q-ease),
+    box-shadow 0.3s var(--q-ease);
+}
+
+.btn-quote > * {
+  position: relative;
+}
+
+/* Light sweep on hover */
+.btn-quote::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.7s var(--q-ease);
+}
+
+.btn-quote:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 18px 40px -10px rgba(233, 184, 114, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.btn-quote:hover::before {
+  transform: translateX(120%);
+}
+
+.btn-quote:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.btn-quote:focus-visible {
+  outline: 3px solid var(--q-gold-light);
+  outline-offset: 4px;
+}
+
+.btn-icon {
+  transition: transform 0.6s var(--q-ease);
+}
+.btn-quote:hover .btn-icon {
+  transform: rotate(180deg);
+}
+
+/* ---------- Entrance animations ---------- */
+.title,
+.lead-text,
+.quote-card,
+.btn-quote {
+  animation: rise 0.9s var(--q-ease) backwards;
+}
+
+.lead-text {
+  animation-delay: 0.12s;
+}
+.quote-card {
+  animation-delay: 0.24s;
+}
+.btn-quote {
+  animation-delay: 0.36s;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+/* First quote reveal (runs when the text elements stop being empty) */
+#quote:not(:empty),
+#author:not(:empty) {
+  animation: quote-in 0.8s var(--q-ease) backwards;
+}
+
+#author:not(:empty) {
+  animation-delay: 0.15s;
+}
+
+@keyframes quote-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(6px);
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }
